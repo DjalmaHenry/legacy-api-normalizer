@@ -20,7 +20,7 @@ pids
 lib-cov
 
 # Coverage directory used by tools like istanbul
-coverage
+coverage/
 *.lcov
 
 # nyc test coverage
@@ -104,12 +104,6 @@ dist
 .temp
 .cache
 
-# vitepress build output
-**/.vitepress/dist
-
-# vitepress cache directory
-**/.vitepress/cache
-
 # Docusaurus cache and generated files
 .docusaurus
 
@@ -134,3 +128,60 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# IntelliJ based IDEs
+.idea
+
+# Finder (MacOS)
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Build outputs
+build/
+dist/
+out/
+
+# Test files
+*.test.js
+*.spec.js
+
+# Temporary files
+tmp/
+temp/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Upload directories
+uploads/
+static/uploads/
+
+# PM2 files
+ecosystem.config.js
+
+# Docker
+Dockerfile.dev
+docker-compose.override.yml
+
+# Fastify specific
+# Add any Fastify-specific files you want to ignore
+
+# TypeScript
+*.js.map
+*.d.ts.map
+
+# ESBuild
+esbuild.meta.json
