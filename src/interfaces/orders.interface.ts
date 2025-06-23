@@ -1,20 +1,17 @@
-import { RawOrderLine, UserOrders, OrderFilters } from '../models/order.model';
+import { RawOrderLine, UserOrders } from '../models/order.model';
 
 export interface IOrdersService {
   processFile(fileContent: string): Promise<{ message: string; total_records: number }>;
-  getOrders(filters?: OrderFilters): Promise<UserOrders[]>;
-  clearOrders(): void;
 }
 
 export interface IOrderProcessor {
   processFile(fileContent: string): Promise<{ message: string; total_records: number }>;
-  getOrders(filters?: OrderFilters): Promise<UserOrders[]>;
-  clearOrders(): void;
+  getOrders(): Promise<UserOrders[]>;
   groupOrdersByUser(orders: RawOrderLine[]): UserOrders[];
 }
 
 export interface IOrderFilter {
-  applyFilters(orders: RawOrderLine[], filters?: OrderFilters): RawOrderLine[];
+  applyFilters(orders: RawOrderLine[]): RawOrderLine[];
 }
 
 export interface IOrderCalculator {

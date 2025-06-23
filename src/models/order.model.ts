@@ -24,9 +24,3 @@ export interface RawOrderLine {
   value: string;
   date: string;
 }
-
-export interface OrderFilters {
-  order_id?: number;
-  start_date?: string;
-  end_date?: string;
-}

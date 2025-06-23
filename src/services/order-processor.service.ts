@@ -1,4 +1,4 @@
-import { RawOrderLine, UserOrders, Product, Order, OrderFilters } from '../models/order.model';
+import { RawOrderLine, UserOrders, Product, Order } from '../models/order.model';
 import { IOrderProcessor, IOrderFilter, IOrderCalculator } from '../interfaces/orders.interface';
 import { IOrderParser } from '../interfaces/parser.interface';
 import { OrderParser } from '../utils/parser';
@@ -28,16 +28,12 @@ export class OrderProcessorService implements IOrderProcessor {
     }
   }
 
-  async getOrders(filters?: OrderFilters): Promise<UserOrders[]> {
-    const filteredOrders = this.filter.applyFilters(this.orders, filters);
+  async getOrders(): Promise<UserOrders[]> {
+    const filteredOrders = this.filter.applyFilters(this.orders);
     const groupedOrders = this.groupOrdersByUser(filteredOrders);
     this.calculator.calculateOrderTotals(groupedOrders);
     
     return groupedOrders;
-  }
-
-  clearOrders(): void {
-    this.orders = [];
   }
 
   groupOrdersByUser(orders: RawOrderLine[]): UserOrders[] {

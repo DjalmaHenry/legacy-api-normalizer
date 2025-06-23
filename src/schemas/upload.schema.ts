@@ -5,18 +5,6 @@ export const uploadResponseSchema = z.object({
   total_records: z.number(),
 });
 
-export const orderFiltersSchema = z.object({
-  order_id: z.coerce.number().optional(),
-  start_date: z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/)
-    .optional(),
-  end_date: z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/)
-    .optional(),
-});
-
 export const productSchema = z.object({
   product_id: z.number(),
   value: z.string(),
@@ -72,7 +60,6 @@ export const userOrdersJsonSchema = {
 };
 
 export type UploadResponse = z.infer<typeof uploadResponseSchema>;
-export type OrderFilters = z.infer<typeof orderFiltersSchema>;
 export type ProductSchema = z.infer<typeof productSchema>;
 export type OrderSchema = z.infer<typeof orderSchema>;
 export type UserOrdersSchema = z.infer<typeof userOrdersSchema>;
