@@ -1,36 +1,44 @@
 import Fastify from 'fastify';
+import multipart from '@fastify/multipart';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
-import { dataRoutes } from './routes/data.routes';
+import { ordersRoutes } from './routes/orders.routes';
+import { FILE_SIZE_LIMIT } from './utils/constants';
 
 export async function buildApp() {
   const fastify = Fastify({ logger: true });
 
-  // Swagger básico
+  await fastify.register(multipart, {
+    limits: { fileSize: FILE_SIZE_LIMIT },
+  });
+
   await fastify.register(swagger, {
     swagger: {
       info: {
-        title: 'Data Normalizer API',
-        description: 'API simples para normalização de dados',
-        version: '0.1.0',
+        title: 'API REST - Processamento de Pedidos Legados',
+        description: 'API para processar arquivos de pedidos com formato de largura fixa',
+        version: '1.0.0',
       },
-      host: 'localhost:3000',
       schemes: ['http'],
-      consumes: ['application/json'],
+      host: process.env.HOST_URL || 'localhost:3000',
+      consumes: ['application/json', 'multipart/form-data'],
       produces: ['application/json'],
+      tags: [{ name: 'Orders', description: 'Operações relacionadas a pedidos' }],
     },
   });
 
   await fastify.register(swaggerUi, {
     routePrefix: '/docs',
+    uiConfig: {
+      docExpansion: 'full',
+      deepLinking: false,
+    },
   });
 
-  // Registrar rotas
-  await fastify.register(dataRoutes);
+  await fastify.register(ordersRoutes);
 
-  // Health check simples
   fastify.get('/health', async () => {
-    return { status: 'OK' };
+    return { status: 'OK', timestamp: new Date().toISOString() };
   });
 
   return fastify;
