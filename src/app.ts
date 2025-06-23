@@ -1,35 +1,37 @@
 import Fastify from 'fastify';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
-import { healthRoutes } from './routes/health.routes';
+import { dataRoutes } from './routes/data.routes';
 
 export async function buildApp() {
   const fastify = Fastify({ logger: true });
 
+  // Swagger básico
   await fastify.register(swagger, {
     swagger: {
       info: {
-        title: 'Legacy API Normalizer',
-        description: 'API para normalização de dados legados',
-        version: '1.0.0',
+        title: 'Data Normalizer API',
+        description: 'API simples para normalização de dados',
+        version: '0.1.0',
       },
+      host: 'localhost:3000',
       schemes: ['http'],
-      host: process.env.HOST_URL || 'localhost:3000',
       consumes: ['application/json'],
       produces: ['application/json'],
-      tags: [{ name: 'Health', description: 'Operações de saúde da API' }],
     },
   });
 
   await fastify.register(swaggerUi, {
     routePrefix: '/docs',
-    uiConfig: {
-      docExpansion: 'full',
-      deepLinking: false,
-    },
   });
 
-  await fastify.register(healthRoutes);
+  // Registrar rotas
+  await fastify.register(dataRoutes);
+
+  // Health check simples
+  fastify.get('/health', async () => {
+    return { status: 'OK' };
+  });
 
   return fastify;
 }

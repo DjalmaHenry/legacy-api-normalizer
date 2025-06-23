@@ -1,22 +1,15 @@
-import dotenv from 'dotenv';
 import { buildApp } from './app';
-
-dotenv.config();
 
 const start = async () => {
   try {
     const app = await buildApp();
-
-    const port = Number(process.env.PORT) || 3000;
-    const host = process.env.HOST || '0.0.0.0';
-    const hostUrl = process.env.HOST_URL || `http://${host}:${port}`;
-
-    await app.listen({ port, host });
-
-    console.log(`🚀 Servidor rodando em ${hostUrl}`);
-    console.log(`📚 Documentação disponível em ${hostUrl}/docs`);
+    const port = 3000;
+    
+    await app.listen({ port, host: '0.0.0.0' });
+    console.log(`🚀 Servidor rodando em http://localhost:${port}`);
+    console.log(`📚 Docs em http://localhost:${port}/docs`);
   } catch (err) {
-    console.error('Erro ao iniciar servidor:', err);
+    console.error('Erro:', err);
     process.exit(1);
   }
 };
