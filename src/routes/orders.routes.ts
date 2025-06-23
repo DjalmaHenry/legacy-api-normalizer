@@ -20,7 +20,6 @@ export async function ordersRoutes(fastify: FastifyInstance) {
         description: 'Upload de arquivo .txt e retorna dados normalizados',
         tags: ['Orders'],
         consumes: ['multipart/form-data'],
-        // Removemos a validação do body para multipart/form-data
         response: {
           200: {
             type: 'array',

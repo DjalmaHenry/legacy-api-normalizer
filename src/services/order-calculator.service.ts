@@ -1,4 +1,4 @@
-import { UserOrders } from '../models/order.model';
+import { UserOrders, Order, Product } from '../models/order.model';
 import { IOrderCalculator } from '../interfaces/orders.interface';
 
 export class OrderCalculatorService implements IOrderCalculator {
@@ -10,8 +10,8 @@ export class OrderCalculatorService implements IOrderCalculator {
     });
   }
 
-  private calculateOrderTotal(order: any): string {
-    const total = order.products.reduce((sum: number, product: any) => {
+  private calculateOrderTotal(order: Order): string {
+    const total = order.products.reduce((sum: number, product: Product) => {
       return sum + parseFloat(product.value);
     }, 0);
     return total.toFixed(2);

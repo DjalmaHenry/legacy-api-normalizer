@@ -1,8 +1,9 @@
 import { RawOrderLine } from '../models/order.model';
 import { IOrderParser } from '../interfaces/parser.interface';
+import { ExtractedFields, FieldPositions } from '../interfaces/parser.model';
 
 const LINE_LENGTH = 95;
-const FIELD_POSITIONS = {
+const FIELD_POSITIONS: FieldPositions = {
   USER_ID: { start: 0, end: 10 },
   NAME: { start: 10, end: 55 },
   ORDER_ID: { start: 55, end: 65 },
@@ -34,7 +35,7 @@ export class OrderParser implements IOrderParser {
     }
   }
 
-  private extractFields(line: string) {
+  private extractFields(line: string): ExtractedFields {
     const user_id = parseInt(
       line.substring(FIELD_POSITIONS.USER_ID.start, FIELD_POSITIONS.USER_ID.end).trim(),
       10,
@@ -62,7 +63,7 @@ export class OrderParser implements IOrderParser {
     return `${dateStr.substring(0, 4)}-${dateStr.substring(4, 6)}-${dateStr.substring(6, 8)}`;
   }
 
-  private validateFields(fields: any): void {
+  private validateFields(fields: ExtractedFields): void {
     if (isNaN(fields.user_id) || isNaN(fields.order_id) || isNaN(fields.product_id)) {
       throw new Error('Campos numéricos inválidos na linha');
     }
