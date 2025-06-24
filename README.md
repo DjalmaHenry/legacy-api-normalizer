@@ -1,6 +1,6 @@
 # Legacy API Normalizer
 
-API RESTful para processar arquivos de pedidos legados e normalizar dados.
+API REST para processar arquivos de pedidos legados e normalizar dados.
 
 ## Tecnologias
 
@@ -12,6 +12,9 @@ API RESTful para processar arquivos de pedidos legados e normalizar dados.
 - **Jest** (testes)
 - **Esbuild** (build)
 - **ESLint** + **Prettier** (qualidade de código)
+
+## Fluxograma da API
+<img width="162" alt="Captura de Tela 2025-06-24 às 17 05 33" src="https://github.com/user-attachments/assets/f80913bc-dc78-4203-8fd1-a7b091144599" />
 
 ## Arquitetura
 
@@ -164,5 +167,3 @@ CREATE TABLE IF NOT EXISTS products (
   FOREIGN KEY (order_id) REFERENCES orders(id)
 )
 ```
-## Fluxograma da API
-<img width="162" alt="Captura de Tela 2025-06-24 às 17 05 33" src="https://github.com/user-attachments/assets/f80913bc-dc78-4203-8fd1-a7b091144599" />
