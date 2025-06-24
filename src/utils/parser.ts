@@ -30,7 +30,7 @@ export class OrderParser implements IOrderParser {
   }
 
   private validateLineLength(line: string): void {
-    if (line.length < LINE_LENGTH) {
+    if (line.length !== LINE_LENGTH) {
       throw new Error(`Linha inválida: tamanho esperado ${LINE_LENGTH}, recebido ${line.length}`);
     }
   }

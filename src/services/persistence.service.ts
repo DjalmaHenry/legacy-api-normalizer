@@ -1,7 +1,8 @@
 import Database from '../database/database';
 import { UserOrders } from '../models/order.model';
+import { IPersistenceService } from '../interfaces/persistence.interface';
 
-export class PersistenceService {
+export class PersistenceService implements IPersistenceService {
   private db: Database;
 
   constructor() {

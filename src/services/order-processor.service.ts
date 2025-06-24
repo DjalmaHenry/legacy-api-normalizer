@@ -4,19 +4,18 @@ import { IOrderParser } from '../interfaces/parser.interface';
 import { OrderParser } from '../utils/parser';
 import { OrderFilterService } from './order-filter.service';
 import { OrderCalculatorService } from './order-calculator.service';
+import { IPersistenceService } from '../interfaces/persistence.interface';
 import { PersistenceService } from './persistence.service';
 
 export class OrderProcessorService implements IOrderProcessor {
   private orders: RawOrderLine[] = [];
-  private persistenceService: PersistenceService;
 
   constructor(
     private parser: IOrderParser = new OrderParser(),
     private filter: IOrderFilter = new OrderFilterService(),
-    private calculator: IOrderCalculator = new OrderCalculatorService()
-  ) {
-    this.persistenceService = new PersistenceService();
-  }
+    private calculator: IOrderCalculator = new OrderCalculatorService(),
+    private persistenceService: IPersistenceService = new PersistenceService()
+  ) {}
 
   async processFile(fileContent: string): Promise<{ message: string; total_records: number }> {
     try {
@@ -92,5 +91,10 @@ export class OrderProcessorService implements IOrderProcessor {
       value: orderLine.value
     };
     order.products.push(product);
+  }
+  
+  // Adicione este método para facilitar os testes
+  public setPersistenceService(service: PersistenceService): void {
+    this.persistenceService = service;
   }
 }
