@@ -34,9 +34,9 @@ export class PersistenceService implements IPersistenceService {
         });
       });
 
-      console.log("✅ Dados persistidos com sucesso no SQLite");
+      console.log("Dados persistidos com sucesso no SQLite");
     } catch (error) {
-      console.error("❌ Erro ao persistir dados no SQLite:", error);
+      console.error("Erro ao persistir dados no SQLite:", error);
       throw error;
     }
   }

@@ -52,9 +52,9 @@ class Database {
         )
       `);
 
-      console.log("✅ Tabelas SQLite inicializadas com sucesso");
+      console.log("Tabelas SQLite inicializadas com sucesso");
     } catch (error) {
-      console.error("❌ Erro ao inicializar tabelas SQLite:", error);
+      console.error("Erro ao inicializar tabelas SQLite:", error);
       throw error;
     }
   }
