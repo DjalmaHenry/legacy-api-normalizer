@@ -23,7 +23,7 @@ API REST para processar arquivos de pedidos legados e normalizar dados.
 
 O projeto segue uma arquitetura em camadas, onde cada camada tem responsabilidades específicas e se comunica através de interfaces:
 
-#### **Camada de Apresentação**
+#### **Camada de Apresentação:**
 
 ##### `routes/`
 - **`orders.routes.ts`**: Define as rotas HTTP e configura a injeção de dependências
@@ -40,7 +40,7 @@ O projeto segue uma arquitetura em camadas, onde cada camada tem responsabilidad
 - **`upload.schema.ts`**: Schemas Zod para validação de dados
 - **Responsabilidade**: Definição de contratos de entrada e saída da API
 
-#### **Camada de Negócio**
+#### **Camada de Negócio:**
 
 ##### `services/`
 Contém a lógica de negócio principal, cada service implementa uma responsabilidade específica:
@@ -69,14 +69,14 @@ Contém a lógica de negócio principal, cada service implementa uma responsabil
   - **Responsabilidade**: Análise e validação de linhas do arquivo
 - **`constants.ts`**: Constantes da aplicação
 
-#### **Camada de Dados**
+#### **Camada de Dados:**
 
 ##### `database/`
 - **`database.ts`**: Classe Singleton para acesso ao SQLite
 - **Responsabilidade**: Conexão com banco, criação de tabelas, operações CRUD
 - **Padrão**: Singleton para garantir uma única instância de conexão
 
-#### **Camada de Contratos**
+#### **Camada de Contratos:**
 
 ##### `interfaces/`
 Define abstrações que permitem baixo acoplamento entre camadas:
