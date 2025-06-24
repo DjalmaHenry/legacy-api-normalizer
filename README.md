@@ -25,10 +25,10 @@ API RESTful para processar arquivos de pedidos legados e normalizar dados.
   - **D** - Dependency Inversion Principle: Dependências via abstrações/interfaces, não implementações concretas (ex: `OrdersController` depende de `IOrderProcessor`, `OrderProcessorService` recebe dependências via construtor)
 
 ### Padrões de Design
-- **Dependency Injection**: Injeção de dependências via interfaces
-- **Singleton**: Classe `Database` com instância única
-- **Strategy**: Diferentes estratégias de processamento via interfaces
-- **Repository**: Abstração de acesso a dados via `IPersistenceService`
+- **Dependency Injection**: Injeção de dependências via interfaces (ex: `OrdersController` constructor, `OrderProcessorService` constructor)
+- **Singleton**: Classe `Database` com instância única (ex: `Database.getInstance()` em `database.ts`, `app.ts`, `persistence.service.ts`)
+- **Strategy**: Diferentes estratégias de processamento via interfaces (ex: `OrderParser` implementa `IOrderParser`, `OrderFilterService` implementa `IOrderFilter`, `OrderCalculatorService` implementa `IOrderCalculator`)
+- **Repository**: Abstração de acesso a dados via `IPersistenceService` (ex: `PersistenceService` implementa `IPersistenceService`, método `persistData()` em `persistence.service.ts`)
 
 ## Instalação
 
