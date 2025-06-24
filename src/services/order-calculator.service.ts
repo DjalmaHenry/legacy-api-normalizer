@@ -1,5 +1,5 @@
-import { UserOrders, Order, Product } from '../models/order.model';
-import { IOrderCalculator } from '../interfaces/orders.interface';
+import { UserOrders, Order, Product } from "../models/order.model";
+import { IOrderCalculator } from "../interfaces/orders.interface";
 
 export class OrderCalculatorService implements IOrderCalculator {
   calculateOrderTotals(userOrders: UserOrders[]): void {

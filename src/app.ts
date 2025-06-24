@@ -1,10 +1,10 @@
-import Fastify from 'fastify';
-import multipart from '@fastify/multipart';
-import swagger from '@fastify/swagger';
-import swaggerUi from '@fastify/swagger-ui';
-import { ordersRoutes } from './routes/orders.routes';
-import { FILE_SIZE_LIMIT } from './utils/constants';
-import Database from './database/database';
+import Fastify from "fastify";
+import multipart from "@fastify/multipart";
+import swagger from "@fastify/swagger";
+import swaggerUi from "@fastify/swagger-ui";
+import { ordersRoutes } from "./routes/orders.routes";
+import { FILE_SIZE_LIMIT } from "./utils/constants";
+import Database from "./database/database";
 
 export async function buildApp() {
   const fastify = Fastify({ logger: true });
@@ -18,30 +18,33 @@ export async function buildApp() {
   await fastify.register(swagger, {
     swagger: {
       info: {
-        title: 'API REST - Processamento de Pedidos Legados',
-        description: 'API para processar arquivos de pedidos com formato de largura fixa',
-        version: '1.0.0',
+        title: "API REST - Processamento de Pedidos Legados",
+        description:
+          "API para processar arquivos de pedidos com formato de largura fixa",
+        version: "1.0.0",
       },
-      schemes: ['http'],
-      host: process.env.HOST_URL || 'localhost:3000',
-      consumes: ['application/json', 'multipart/form-data'],
-      produces: ['application/json'],
-      tags: [{ name: 'Orders', description: 'Operações relacionadas a pedidos' }],
+      schemes: ["http"],
+      host: process.env.HOST_URL || "localhost:3000",
+      consumes: ["application/json", "multipart/form-data"],
+      produces: ["application/json"],
+      tags: [
+        { name: "Orders", description: "Operações relacionadas a pedidos" },
+      ],
     },
   });
 
   await fastify.register(swaggerUi, {
-    routePrefix: '/docs',
+    routePrefix: "/docs",
     uiConfig: {
-      docExpansion: 'full',
+      docExpansion: "full",
       deepLinking: false,
     },
   });
 
   await fastify.register(ordersRoutes);
 
-  fastify.get('/health', async () => {
-    return { status: 'OK', timestamp: new Date().toISOString() };
+  fastify.get("/health", async () => {
+    return { status: "OK", timestamp: new Date().toISOString() };
   });
 
   return fastify;

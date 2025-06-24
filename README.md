@@ -14,11 +14,13 @@ API REST para processar arquivos de pedidos legados e normalizar dados.
 - **ESLint** + **Prettier** (qualidade de código)
 
 ## Fluxograma da API
+
 <img width="162" alt="Captura de Tela 2025-06-24 às 17 05 33" src="https://github.com/user-attachments/assets/f80913bc-dc78-4203-8fd1-a7b091144599" />
 
 ## Arquitetura
 
 ### Padrões Arquiteturais
+
 - **Arquitetura em Camadas**: Controllers → Services → Database
 - **Princípios SOLID**:
   - **S** - Single Responsibility Principle: Cada classe tem uma única responsabilidade (ex: `OrderParser` apenas analisa linhas, `OrderCalculator` apenas calcula totais)
@@ -28,6 +30,7 @@ API REST para processar arquivos de pedidos legados e normalizar dados.
   - **D** - Dependency Inversion Principle: Dependências via abstrações/interfaces, não implementações concretas (ex: `OrdersController` depende de `IOrderProcessor`, `OrderProcessorService` recebe dependências via construtor)
 
 ### Padrões de Design
+
 - **Dependency Injection**: Injeção de dependências via interfaces (ex: `OrdersController` constructor, `OrderProcessorService` constructor)
 - **Singleton**: Classe `Database` com instância única (ex: `Database.getInstance()` em `database.ts`, `app.ts`, `persistence.service.ts`)
 - **Strategy**: Diferentes estratégias de processamento via interfaces (ex: `OrderParser` implementa `IOrderParser`, `OrderFilterService` implementa `IOrderFilter`, `OrderCalculatorService` implementa `IOrderCalculator`)
@@ -74,6 +77,7 @@ curl -X POST \
 #### Formato de entrada (.txt):
 
 Cada linha do arquivo deve ter exatamente 95 caracteres com campos de tamanho fixo:
+
 ```bash
 000000058                                  Dewey Crona00000005670000000001      1328.520211001
 0000000118                                Robena Raynor00000010950000000006     1544.6620211212
@@ -139,6 +143,7 @@ A documentação da API está disponível via Swagger em `/docs` quando o servid
 Utiliza SQLite com as seguintes tabelas:
 
 ### Tabela `users`
+
 ```sql
 CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY,
@@ -147,6 +152,7 @@ CREATE TABLE IF NOT EXISTS users (
 ```
 
 ### Tabela `orders`
+
 ```sql
 CREATE TABLE IF NOT EXISTS orders (
   id INTEGER PRIMARY KEY,
@@ -158,6 +164,7 @@ CREATE TABLE IF NOT EXISTS orders (
 ```
 
 ### Tabela `products`
+
 ```sql
 CREATE TABLE IF NOT EXISTS products (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
