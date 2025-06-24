@@ -164,3 +164,5 @@ CREATE TABLE IF NOT EXISTS products (
   FOREIGN KEY (order_id) REFERENCES orders(id)
 )
 ```
+
+<img width="500" alt="Captura de Tela 2025-06-24 às 16 49 24" src="https://github.com/user-attachments/assets/b6f2aa7e-9459-46c0-9c76-bc50f298fbc2" />
