@@ -11,20 +11,14 @@ export class PersistenceService implements IPersistenceService {
 
   public persistData(data: UserOrders[]): void {
     try {
-      // Para cada usuário
       data.forEach(user => {
-        // Inserir usuário
         this.db.insertUser(user.user_id, user.name);
 
-        // Para cada pedido do usuário
         user.orders.forEach(order => {
-          // Inserir pedido
           this.db.insertOrder(order.order_id, user.user_id, order.total, order.date);
           
-          // Limpar produtos existentes para este pedido
           this.db.clearProductsForOrder(order.order_id);
           
-          // Inserir produtos do pedido
           order.products.forEach(product => {
             this.db.insertProduct(order.order_id, product.product_id, product.value);
           });

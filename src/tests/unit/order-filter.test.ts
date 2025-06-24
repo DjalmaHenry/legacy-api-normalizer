@@ -10,7 +10,6 @@ describe('OrderFilterService', () => {
 
   describe('applyFilters', () => {
     it('deve retornar uma cópia dos pedidos sem modificá-los', () => {
-      // Arrange
       const orders: RawOrderLine[] = [
         {
           user_id: 1,
@@ -30,12 +29,10 @@ describe('OrderFilterService', () => {
         }
       ];
 
-      // Act
       const result = filter.applyFilters(orders);
 
-      // Assert
       expect(result).toEqual(orders);
-      expect(result).not.toBe(orders); // Verifica se é uma cópia e não a mesma referência
+      expect(result).not.toBe(orders);
     });
 
     it('deve retornar um array vazio quando recebe um array vazio', () => {

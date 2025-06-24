@@ -9,7 +9,6 @@ describe('OrderParser', () => {
 
   describe('parseLine', () => {
     it('deve analisar corretamente uma linha válida', () => {
-      // Formato: USER_ID(10) + NAME(45) + ORDER_ID(10) + PRODUCT_ID(10) + VALUE(12) + DATE(8)
       const line = '0000000001João Silva                                   0000000001000000000100000123.45 20230101';
       
       const result = parser.parseLine(line);

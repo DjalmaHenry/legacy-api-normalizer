@@ -10,7 +10,6 @@ describe('OrderCalculatorService', () => {
 
   describe('calculateOrderTotals', () => {
     it('deve calcular corretamente os totais dos pedidos', () => {
-      // Arrange
       const userOrders: UserOrders[] = [
         {
           user_id: 1,
@@ -52,13 +51,11 @@ describe('OrderCalculatorService', () => {
         }
       ];
 
-      // Act
       calculator.calculateOrderTotals(userOrders);
 
-      // Assert
-      expect(userOrders[0].orders[0].total).toBe('301.25'); // 100.50 + 200.75
+      expect(userOrders[0].orders[0].total).toBe('301.25');
       expect(userOrders[0].orders[1].total).toBe('50.25');
-      expect(userOrders[1].orders[0].total).toBe('196.00'); // 75.99 + 120.01
+      expect(userOrders[1].orders[0].total).toBe('196.00');
     });
 
     it('deve lidar com pedidos sem produtos', () => {

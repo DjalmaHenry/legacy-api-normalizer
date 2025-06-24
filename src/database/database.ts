@@ -1,7 +1,6 @@
 import { DatabaseSync } from 'node:sqlite';
 import path from 'path';
 
-// Caminho para o arquivo do banco de dados
 const DB_PATH = path.join(process.cwd(), 'database.db');
 
 class Database {
@@ -26,7 +25,6 @@ class Database {
 
   private initTables(): void {
     try {
-      // Criar tabela de usuários
       this.db.exec(`
         CREATE TABLE IF NOT EXISTS users (
           id INTEGER PRIMARY KEY,
@@ -34,7 +32,6 @@ class Database {
         )
       `);
 
-      // Criar tabela de pedidos
       this.db.exec(`
         CREATE TABLE IF NOT EXISTS orders (
           id INTEGER PRIMARY KEY,
@@ -45,7 +42,6 @@ class Database {
         )
       `);
 
-      // Criar tabela de produtos
       this.db.exec(`
         CREATE TABLE IF NOT EXISTS products (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -63,7 +59,6 @@ class Database {
     }
   }
 
-  // Método para inserir usuário (ignorar se já existir)
   public insertUser(userId: number, name: string): void {
     const stmt = this.db.prepare(`
       INSERT OR IGNORE INTO users (id, name) VALUES (?, ?)
@@ -71,7 +66,6 @@ class Database {
     stmt.run(userId, name);
   }
 
-  // Método para inserir pedido (substituir se já existir)
   public insertOrder(orderId: number, userId: number, total: string, date: string): void {
     const stmt = this.db.prepare(`
       INSERT OR REPLACE INTO orders (id, user_id, total, date) VALUES (?, ?, ?, ?)
@@ -79,7 +73,6 @@ class Database {
     stmt.run(orderId, userId, total, date);
   }
 
-  // Método para inserir produto
   public insertProduct(orderId: number, productId: number, value: string): void {
     const stmt = this.db.prepare(`
       INSERT INTO products (order_id, product_id, value) VALUES (?, ?, ?)
@@ -87,7 +80,6 @@ class Database {
     stmt.run(orderId, productId, value);
   }
 
-  // Método para limpar produtos de um pedido antes de inserir novos
   public clearProductsForOrder(orderId: number): void {
     const stmt = this.db.prepare(`
       DELETE FROM products WHERE order_id = ?

@@ -36,7 +36,6 @@ export class OrderProcessorService implements IOrderProcessor {
     const groupedOrders = this.groupOrdersByUser(filteredOrders);
     this.calculator.calculateOrderTotals(groupedOrders);
     
-    // Persistir dados no SQLite
     this.persistenceService.persistData(groupedOrders);
     
     return groupedOrders;
@@ -93,7 +92,6 @@ export class OrderProcessorService implements IOrderProcessor {
     order.products.push(product);
   }
   
-  // Adicione este método para facilitar os testes
   public setPersistenceService(service: PersistenceService): void {
     this.persistenceService = service;
   }

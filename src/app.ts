@@ -9,7 +9,6 @@ import Database from './database/database';
 export async function buildApp() {
   const fastify = Fastify({ logger: true });
 
-  // Inicializar o banco de dados
   Database.getInstance();
 
   await fastify.register(multipart, {

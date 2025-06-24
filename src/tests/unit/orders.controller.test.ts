@@ -11,7 +11,6 @@ describe('OrdersController', () => {
   let mockFile: Partial<MultipartFile>;
 
   beforeEach(() => {
-    // Configurar mocks
     mockOrderProcessor = {
       processFile: jest.fn(),
       getOrders: jest.fn(),
@@ -32,23 +31,19 @@ describe('OrdersController', () => {
       send: jest.fn().mockReturnThis(),
     };
 
-    // Criar instância do controlador
     controller = new OrdersController(mockOrderProcessor);
   });
 
   describe('uploadFile', () => {
     it('deve processar o upload de arquivo com sucesso', async () => {
-      // Arrange
       const processResult = { message: 'Arquivo processado com sucesso', total_records: 3 };
       const normalizedData = [{ user_id: 1, name: 'João Silva', orders: [] }];
       
       mockOrderProcessor.processFile.mockResolvedValue(processResult);
       mockOrderProcessor.getOrders.mockResolvedValue(normalizedData);
 
-      // Act
       await controller.uploadFile(mockRequest as FastifyRequest, mockReply as FastifyReply);
 
-      // Assert
       expect(mockRequest.file).toHaveBeenCalled();
       expect(mockFile.toBuffer).toHaveBeenCalled();
       expect(mockOrderProcessor.processFile).toHaveBeenCalledWith('conteúdo do arquivo');
@@ -58,38 +53,29 @@ describe('OrdersController', () => {
     });
 
     it('deve retornar erro 400 quando nenhum arquivo é enviado', async () => {
-      // Arrange
       mockRequest.file = jest.fn().mockResolvedValue(undefined);
 
-      // Act
       await controller.uploadFile(mockRequest as FastifyRequest, mockReply as FastifyReply);
 
-      // Assert
       expect(mockReply.status).toHaveBeenCalledWith(400);
       expect(mockReply.send).toHaveBeenCalledWith({ error: 'Nenhum arquivo enviado' });
     });
 
     it('deve retornar erro 400 quando o arquivo não é .txt', async () => {
-      // Arrange
       mockFile.filename = 'test.pdf';
 
-      // Act
       await controller.uploadFile(mockRequest as FastifyRequest, mockReply as FastifyReply);
 
-      // Assert
       expect(mockReply.status).toHaveBeenCalledWith(400);
       expect(mockReply.send).toHaveBeenCalledWith({ error: 'Apenas arquivos .txt são aceitos' });
     });
 
     it('deve retornar erro 400 quando o processamento falha', async () => {
-      // Arrange
       const error = new Error('Erro de processamento');
       mockOrderProcessor.processFile.mockRejectedValue(error);
 
-      // Act
       await controller.uploadFile(mockRequest as FastifyRequest, mockReply as FastifyReply);
 
-      // Assert
       expect(mockReply.status).toHaveBeenCalledWith(400);
       expect(mockReply.send).toHaveBeenCalledWith({ error: 'Erro de processamento' });
     });
