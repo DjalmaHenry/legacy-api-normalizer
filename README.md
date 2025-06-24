@@ -165,4 +165,4 @@ CREATE TABLE IF NOT EXISTS products (
 )
 ```
 ## Fluxograma da API
-<img width="500" alt="Captura de Tela 2025-06-24 às 16 49 24" src="https://github.com/user-attachments/assets/b6f2aa7e-9459-46c0-9c76-bc50f298fbc2" />
+<img width="162" alt="Captura de Tela 2025-06-24 às 17 05 33" src="https://github.com/user-attachments/assets/f80913bc-dc78-4203-8fd1-a7b091144599" />
