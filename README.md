@@ -72,9 +72,9 @@ curl -X POST \
 
 Cada linha do arquivo deve ter exatamente 95 caracteres com campos de tamanho fixo:
 ```bash
-0000000001João Silva                                   0000000001000000000100000123.45 20230101
-0000000001João Silva                                   0000000001000000000200000056.78 20230101
-0000000002Maria Souza                                  0000000002000000000300000099.99 20230202
+000000058                                  Dewey Crona00000005670000000001      1328.520211001
+0000000118                                Robena Raynor00000010950000000006     1544.6620211212
+0000000180                                    Judi Lowe00000016750000000004      359.9820210820
 ```
 
 **Estrutura dos campos:**
