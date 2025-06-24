@@ -77,14 +77,6 @@ Cada linha do arquivo deve ter exatamente 95 caracteres com campos de tamanho fi
 0000000180                                    Judi Lowe00000016750000000004      359.9820210820
 ```
 
-**Estrutura dos campos:**
-- Posições 0-10: ID do usuário (10 dígitos)
-- Posições 10-55: Nome do usuário (45 caracteres)
-- Posições 55-65: ID do pedido (10 dígitos)
-- Posições 65-75: ID do produto (10 dígitos)
-- Posições 75-87: Valor do produto (12 caracteres)
-- Posições 87-95: Data (8 dígitos no formato YYYYMMDD)
-
 #### Formato de saída (JSON):
 
 ```json
