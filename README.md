@@ -15,9 +15,82 @@ API REST para processar arquivos de pedidos legados e normalizar dados.
 
 ## Fluxograma da API
 
-<img width="162" alt="Captura de Tela 2025-06-24 às 17 05 33" src="https://github.com/user-attachments/assets/f80913bc-dc78-4203-8fd1-a7b091144599" />
+<img width="162" alt="Captura de Tela 2025-06-24 às 17 05 33" src="https://github.com/user-attachments/assets/f80913bc-dc78-4203-8fd1-a7b091144599" />
 
 ## Arquitetura
+
+### Arquitetura em Camadas
+
+O projeto segue uma arquitetura em camadas, onde cada camada tem responsabilidades específicas e se comunica através de interfaces:
+
+#### **Camada de Apresentação**
+
+##### `routes/`
+- **`orders.routes.ts`**: Define as rotas HTTP e configura a injeção de dependências
+- **Responsabilidade**: Configuração de endpoints, schemas de validação e documentação Swagger
+- **Fluxo**: Recebe requisições HTTP → Injeta dependências → Delega para Controllers
+
+##### `controllers/`
+- **`orders.controller.ts`**: Controlador que gerencia requisições HTTP
+- **Responsabilidade**: Validação de entrada, extração de dados do request, tratamento de erros HTTP
+- **Dependências**: Recebe `IOrderProcessor` via injeção de dependência
+- **Fluxo**: Valida arquivo → Extrai conteúdo → Chama service → Retorna resposta HTTP
+
+##### `schemas/`
+- **`upload.schema.ts`**: Schemas Zod para validação de dados
+- **Responsabilidade**: Definição de contratos de entrada e saída da API
+
+#### **Camada de Negócio**
+
+##### `services/`
+Contém a lógica de negócio principal, cada service implementa uma responsabilidade específica:
+
+- **`order-processor.service.ts`**: Orquestrador principal
+  - **Implementa**: `IOrderProcessor`
+  - **Dependências**: `IOrderParser`, `IOrderFilter`, `IOrderCalculator`, `IPersistenceService`
+  - **Responsabilidade**: Coordena todo o fluxo de processamento
+
+- **`order-filter.service.ts`**: Filtros de dados
+  - **Implementa**: `IOrderFilter`
+  - **Responsabilidade**: Aplicação de regras de filtro nos pedidos
+
+- **`order-calculator.service.ts`**: Cálculos de totais
+  - **Implementa**: `IOrderCalculator`
+  - **Responsabilidade**: Cálculo de totais de pedidos
+
+- **`persistence.service.ts`**: Persistência de dados
+  - **Implementa**: `IPersistenceService`
+  - **Dependências**: `Database` (Singleton)
+  - **Responsabilidade**: Salvar dados processados no banco
+
+##### `utils/`
+- **`parser.ts`**: Utilitário de parsing
+  - **Implementa**: `IOrderParser`
+  - **Responsabilidade**: Análise e validação de linhas do arquivo
+- **`constants.ts`**: Constantes da aplicação
+
+#### **Camada de Dados**
+
+##### `database/`
+- **`database.ts`**: Classe Singleton para acesso ao SQLite
+- **Responsabilidade**: Conexão com banco, criação de tabelas, operações CRUD
+- **Padrão**: Singleton para garantir uma única instância de conexão
+
+#### **Camada de Contratos**
+
+##### `interfaces/`
+Define abstrações que permitem baixo acoplamento entre camadas:
+
+- **`orders.interface.ts`**: Contratos para processamento de pedidos
+  - `IOrderProcessor`, `IOrderFilter`, `IOrderCalculator`
+- **`parser.interface.ts`**: Contratos para parsing
+  - `IOrderParser`, `IFieldValidator`
+- **`persistence.interface.ts`**: Contrato para persistência
+  - `IPersistenceService`
+
+##### `models/`
+- **`order.model.ts`**: Definição de tipos e modelos de dados
+- **Responsabilidade**: DTOs e estruturas de dados compartilhadas
 
 ### Padrões Arquiteturais
 
