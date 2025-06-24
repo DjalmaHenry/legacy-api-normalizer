@@ -4,9 +4,13 @@ import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import { ordersRoutes } from './routes/orders.routes';
 import { FILE_SIZE_LIMIT } from './utils/constants';
+import Database from './database/database';
 
 export async function buildApp() {
   const fastify = Fastify({ logger: true });
+
+  // Inicializar o banco de dados
+  Database.getInstance();
 
   await fastify.register(multipart, {
     limits: { fileSize: FILE_SIZE_LIMIT },

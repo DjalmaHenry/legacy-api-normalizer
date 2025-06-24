@@ -4,15 +4,19 @@ import { IOrderParser } from '../interfaces/parser.interface';
 import { OrderParser } from '../utils/parser';
 import { OrderFilterService } from './order-filter.service';
 import { OrderCalculatorService } from './order-calculator.service';
+import { PersistenceService } from './persistence.service';
 
 export class OrderProcessorService implements IOrderProcessor {
   private orders: RawOrderLine[] = [];
+  private persistenceService: PersistenceService;
 
   constructor(
     private parser: IOrderParser = new OrderParser(),
     private filter: IOrderFilter = new OrderFilterService(),
     private calculator: IOrderCalculator = new OrderCalculatorService()
-  ) {}
+  ) {
+    this.persistenceService = new PersistenceService();
+  }
 
   async processFile(fileContent: string): Promise<{ message: string; total_records: number }> {
     try {
@@ -32,6 +36,9 @@ export class OrderProcessorService implements IOrderProcessor {
     const filteredOrders = this.filter.applyFilters(this.orders);
     const groupedOrders = this.groupOrdersByUser(filteredOrders);
     this.calculator.calculateOrderTotals(groupedOrders);
+    
+    // Persistir dados no SQLite
+    this.persistenceService.persistData(groupedOrders);
     
     return groupedOrders;
   }

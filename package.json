@@ -4,9 +4,9 @@
   "description": "API REST para processamento de pedidos legados com largura fixa",
   "main": "dist/server.js",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "tsx --watch --experimental-sqlite src/server.ts",
     "build": "node esbuild.config.js",
-    "start": "node dist/server.js",
+    "start": "node --experimental-sqlite dist/server.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
@@ -35,7 +35,7 @@
   "devDependencies": {
     "@eslint/js": "^9.29.0",
     "@types/jest": "^29.5.8",
-    "@types/node": "^20.9.0",
+    "@types/node": "^22.5.0",
     "esbuild": "^0.19.5",
     "eslint": "^9.29.0",
     "globals": "^16.2.0",
@@ -43,6 +43,7 @@
     "prettier": "^3.5.3",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
     "tsx": "^4.1.4",
     "typescript": "^5.2.2",
     "typescript-eslint": "^8.34.1"
