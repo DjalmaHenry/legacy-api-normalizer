@@ -52,3 +52,123 @@ npm run lint
 npm run lint:fix
 npm run format
 ```
+
+## API
+
+### POST /orders/upload
+
+Endpoint para upload de arquivo `.txt` com dados de pedidos legados e retorna dados normalizados em JSON.
+
+#### Como usar:
+
+```bash
+curl -X POST \
+  http://localhost:3000/orders/upload \
+  -H "Content-Type: multipart/form-data" \
+  -F "file=@orders.txt"
+```
+
+#### Formato de entrada (.txt):
+
+Cada linha do arquivo deve ter exatamente 95 caracteres com campos de tamanho fixo:
+```bash
+0000000001João Silva                                   0000000001000000000100000123.45 20230101
+0000000001João Silva                                   0000000001000000000200000056.78 20230101
+0000000002Maria Souza                                  0000000002000000000300000099.99 20230202
+```
+
+**Estrutura dos campos:**
+- Posições 0-10: ID do usuário (10 dígitos)
+- Posições 10-55: Nome do usuário (45 caracteres)
+- Posições 55-65: ID do pedido (10 dígitos)
+- Posições 65-75: ID do produto (10 dígitos)
+- Posições 75-87: Valor do produto (12 caracteres)
+- Posições 87-95: Data (8 dígitos no formato YYYYMMDD)
+
+#### Formato de saída (JSON):
+
+```json
+[
+  {
+    "user_id": 1,
+    "name": "João Silva",
+    "orders": [
+      {
+        "order_id": 1,
+        "total": "180.23",
+        "date": "2023-01-01",
+        "products": [
+          {
+            "product_id": 1,
+            "value": "123.45"
+          },
+          {
+            "product_id": 2,
+            "value": "56.78"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "user_id": 2,
+    "name": "Maria Souza",
+    "orders": [
+      {
+        "order_id": 2,
+        "total": "99.99",
+        "date": "2023-02-02",
+        "products": [
+          {
+            "product_id": 3,
+            "value": "99.99"
+          }
+        ]
+      }
+    ]
+  }
+]
+```
+
+#### Respostas:
+
+- **200**: Array de usuários com pedidos normalizados
+- **400**: Erro de validação ou processamento
+
+## Documentação
+
+A documentação da API está disponível via Swagger em `/docs` quando o servidor estiver rodando.
+
+## Banco de Dados
+
+Utiliza SQLite com as seguintes tabelas:
+
+### Tabela `users`
+```sql
+CREATE TABLE IF NOT EXISTS users (
+  id INTEGER PRIMARY KEY,
+  name TEXT
+)
+```
+
+### Tabela `orders`
+```sql
+CREATE TABLE IF NOT EXISTS orders (
+  id INTEGER PRIMARY KEY,
+  user_id INTEGER,
+  total TEXT,
+  date TEXT,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+)
+```
+
+### Tabela `products`
+```sql
+CREATE TABLE IF NOT EXISTS products (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  order_id INTEGER,
+  product_id INTEGER,
+  value TEXT,
+  FOREIGN KEY (order_id) REFERENCES orders(id)
+)
+```
