@@ -1,6 +1,6 @@
-import { FastifyRequest, FastifyReply } from "fastify";
-import { IOrderProcessor } from "../interfaces/orders.interface";
-import { MultipartFile } from "@fastify/multipart";
+import { FastifyRequest, FastifyReply } from 'fastify';
+import { IOrderProcessor } from '../interfaces/orders.interface';
+import { MultipartFile } from '@fastify/multipart';
 
 export class OrdersController {
   constructor(private orderProcessor: IOrderProcessor) {}
@@ -24,17 +24,17 @@ export class OrdersController {
 
   private validateFileUpload(data: MultipartFile | undefined): void {
     if (!data) {
-      throw new Error("Nenhum arquivo enviado");
+      throw new Error('Nenhum arquivo enviado');
     }
 
-    if (!data.filename.endsWith(".txt")) {
-      throw new Error("Apenas arquivos .txt são aceitos");
+    if (!data.filename.endsWith('.txt')) {
+      throw new Error('Apenas arquivos .txt são aceitos');
     }
   }
 
   private async extractFileContent(data: MultipartFile): Promise<string> {
     const buffer = await data.toBuffer();
-    return buffer.toString("utf-8");
+    return buffer.toString('utf-8');
   }
 
   private handleError(reply: FastifyReply, error: unknown): FastifyReply {

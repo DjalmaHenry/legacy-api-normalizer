@@ -1,20 +1,11 @@
-import {
-  RawOrderLine,
-  UserOrders,
-  Product,
-  Order,
-} from "../models/order.model";
-import {
-  IOrderProcessor,
-  IOrderFilter,
-  IOrderCalculator,
-} from "../interfaces/orders.interface";
-import { IOrderParser } from "../interfaces/parser.interface";
-import { OrderParser } from "../utils/parser";
-import { OrderFilterService } from "./order-filter.service";
-import { OrderCalculatorService } from "./order-calculator.service";
-import { IPersistenceService } from "../interfaces/persistence.interface";
-import { PersistenceService } from "./persistence.service";
+import { RawOrderLine, UserOrders, Product, Order } from '../models/order.model';
+import { IOrderProcessor, IOrderFilter, IOrderCalculator } from '../interfaces/orders.interface';
+import { IOrderParser } from '../interfaces/parser.interface';
+import { OrderParser } from '../utils/parser';
+import { OrderFilterService } from './order-filter.service';
+import { OrderCalculatorService } from './order-calculator.service';
+import { IPersistenceService } from '../interfaces/persistence.interface';
+import { PersistenceService } from './persistence.service';
 
 export class OrderProcessorService implements IOrderProcessor {
   private orders: RawOrderLine[] = [];
@@ -26,15 +17,13 @@ export class OrderProcessorService implements IOrderProcessor {
     private persistenceService: IPersistenceService = new PersistenceService(),
   ) {}
 
-  async processFile(
-    fileContent: string,
-  ): Promise<{ message: string; total_records: number }> {
+  async processFile(fileContent: string): Promise<{ message: string; total_records: number }> {
     try {
       const parsedOrders = this.parser.parseFile(fileContent);
       this.orders = parsedOrders;
 
       return {
-        message: "Arquivo processado com sucesso",
+        message: 'Arquivo processado com sucesso',
         total_records: parsedOrders.length,
       };
     } catch (error) {
@@ -62,19 +51,13 @@ export class OrderProcessorService implements IOrderProcessor {
     return Array.from(userMap.values());
   }
 
-  private processOrderLine(
-    orderLine: RawOrderLine,
-    userMap: Map<number, UserOrders>,
-  ): void {
+  private processOrderLine(orderLine: RawOrderLine, userMap: Map<number, UserOrders>): void {
     const user = this.getOrCreateUser(orderLine, userMap);
     const order = this.getOrCreateOrder(orderLine, user);
     this.addProductToOrder(orderLine, order);
   }
 
-  private getOrCreateUser(
-    orderLine: RawOrderLine,
-    userMap: Map<number, UserOrders>,
-  ): UserOrders {
+  private getOrCreateUser(orderLine: RawOrderLine, userMap: Map<number, UserOrders>): UserOrders {
     if (!userMap.has(orderLine.user_id)) {
       userMap.set(orderLine.user_id, {
         user_id: orderLine.user_id,
@@ -91,7 +74,7 @@ export class OrderProcessorService implements IOrderProcessor {
     if (!order) {
       order = {
         order_id: orderLine.order_id,
-        total: "0.00",
+        total: '0.00',
         date: orderLine.date,
         products: [],
       };

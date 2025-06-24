@@ -1,5 +1,5 @@
-import { RawOrderLine } from "../models/order.model";
-import { ExtractedFields } from "./parser.model";
+import { RawOrderLine } from '../models/order.model';
+import { ExtractedFields } from './parser.model';
 
 export interface IOrderParser {
   parseLine(line: string): RawOrderLine;

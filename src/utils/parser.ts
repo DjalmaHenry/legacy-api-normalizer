@@ -1,6 +1,6 @@
-import { RawOrderLine } from "../models/order.model";
-import { IOrderParser } from "../interfaces/parser.interface";
-import { ExtractedFields, FieldPositions } from "../interfaces/parser.model";
+import { RawOrderLine } from '../models/order.model';
+import { IOrderParser } from '../interfaces/parser.interface';
+import { ExtractedFields, FieldPositions } from '../interfaces/parser.model';
 
 const LINE_LENGTH = 95;
 const FIELD_POSITIONS: FieldPositions = {
@@ -31,45 +31,28 @@ export class OrderParser implements IOrderParser {
 
   private validateLineLength(line: string): void {
     if (line.length !== LINE_LENGTH) {
-      throw new Error(
-        `Linha inválida: tamanho esperado ${LINE_LENGTH}, recebido ${line.length}`,
-      );
+      throw new Error(`Linha inválida: tamanho esperado ${LINE_LENGTH}, recebido ${line.length}`);
     }
   }
 
   private extractFields(line: string): ExtractedFields {
     const user_id = parseInt(
-      line
-        .substring(FIELD_POSITIONS.USER_ID.start, FIELD_POSITIONS.USER_ID.end)
-        .trim(),
+      line.substring(FIELD_POSITIONS.USER_ID.start, FIELD_POSITIONS.USER_ID.end).trim(),
       10,
     );
-    const name = line
-      .substring(FIELD_POSITIONS.NAME.start, FIELD_POSITIONS.NAME.end)
-      .trim();
+    const name = line.substring(FIELD_POSITIONS.NAME.start, FIELD_POSITIONS.NAME.end).trim();
     const order_id = parseInt(
-      line
-        .substring(FIELD_POSITIONS.ORDER_ID.start, FIELD_POSITIONS.ORDER_ID.end)
-        .trim(),
+      line.substring(FIELD_POSITIONS.ORDER_ID.start, FIELD_POSITIONS.ORDER_ID.end).trim(),
       10,
     );
     const product_id = parseInt(
-      line
-        .substring(
-          FIELD_POSITIONS.PRODUCT_ID.start,
-          FIELD_POSITIONS.PRODUCT_ID.end,
-        )
-        .trim(),
+      line.substring(FIELD_POSITIONS.PRODUCT_ID.start, FIELD_POSITIONS.PRODUCT_ID.end).trim(),
       10,
     );
     const value = parseFloat(
-      line
-        .substring(FIELD_POSITIONS.VALUE.start, FIELD_POSITIONS.VALUE.end)
-        .trim(),
+      line.substring(FIELD_POSITIONS.VALUE.start, FIELD_POSITIONS.VALUE.end).trim(),
     ).toFixed(2);
-    const dateStr = line
-      .substring(FIELD_POSITIONS.DATE.start, FIELD_POSITIONS.DATE.end)
-      .trim();
+    const dateStr = line.substring(FIELD_POSITIONS.DATE.start, FIELD_POSITIONS.DATE.end).trim();
 
     const date = this.formatDate(dateStr);
 
@@ -81,21 +64,17 @@ export class OrderParser implements IOrderParser {
   }
 
   private validateFields(fields: ExtractedFields): void {
-    if (
-      isNaN(fields.user_id) ||
-      isNaN(fields.order_id) ||
-      isNaN(fields.product_id)
-    ) {
-      throw new Error("Campos numéricos inválidos na linha");
+    if (isNaN(fields.user_id) || isNaN(fields.order_id) || isNaN(fields.product_id)) {
+      throw new Error('Campos numéricos inválidos na linha');
     }
 
     if (!fields.name) {
-      throw new Error("Nome do usuário não pode estar vazio");
+      throw new Error('Nome do usuário não pode estar vazio');
     }
   }
 
   parseFile(content: string): RawOrderLine[] {
-    const lines = content.split("\n").filter((line) => line.trim().length > 0);
+    const lines = content.split('\n').filter((line) => line.trim().length > 0);
     return lines.map((line, index) => {
       try {
         return this.parseLine(line);

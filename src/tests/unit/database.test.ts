@@ -1,12 +1,12 @@
-import Database from "../../database/database";
-import { DatabaseSync } from "node:sqlite";
-import path from "path";
+import Database from '../../database/database';
+import { DatabaseSync } from 'node:sqlite';
+import path from 'path';
 
-jest.mock("node:sqlite", () => ({
+jest.mock('node:sqlite', () => ({
   DatabaseSync: jest.fn(),
 }));
 
-jest.mock("fs");
+jest.mock('fs');
 
 interface MockDatabaseSync {
   exec: jest.Mock;
@@ -18,7 +18,7 @@ interface MockStatement {
   run: jest.Mock;
 }
 
-describe("Database", () => {
+describe('Database', () => {
   let mockDb: MockDatabaseSync;
   let mockExec: jest.Mock;
   let mockPrepare: jest.Mock;
@@ -26,13 +26,13 @@ describe("Database", () => {
   let consoleSpy: jest.SpyInstance;
   let consoleErrorSpy: jest.SpyInstance;
 
-  const DB_PATH = path.join(process.cwd(), "database.db");
+  const DB_PATH = path.join(process.cwd(), 'database.db');
 
   beforeEach(() => {
     jest.clearAllMocks();
 
-    consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
-    consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+    consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
     mockRun = jest.fn();
     mockPrepare = jest.fn().mockReturnValue({ run: mockRun } as MockStatement);
@@ -57,8 +57,8 @@ describe("Database", () => {
     (Database as unknown as { instance?: Database }).instance = undefined;
   });
 
-  describe("Singleton Pattern", () => {
-    it("deve retornar a mesma instância quando chamado múltiplas vezes", () => {
+  describe('Singleton Pattern', () => {
+    it('deve retornar a mesma instância quando chamado múltiplas vezes', () => {
       const instance1 = Database.getInstance();
       const instance2 = Database.getInstance();
 
@@ -67,30 +67,28 @@ describe("Database", () => {
       expect(DatabaseSync).toHaveBeenCalledWith(DB_PATH);
     });
 
-    it("deve inicializar as tabelas na criação da instância", () => {
+    it('deve inicializar as tabelas na criação da instância', () => {
       Database.getInstance();
 
       expect(mockExec).toHaveBeenCalledTimes(3);
       expect(mockExec).toHaveBeenNthCalledWith(
         1,
-        expect.stringContaining("CREATE TABLE IF NOT EXISTS users"),
+        expect.stringContaining('CREATE TABLE IF NOT EXISTS users'),
       );
       expect(mockExec).toHaveBeenNthCalledWith(
         2,
-        expect.stringContaining("CREATE TABLE IF NOT EXISTS orders"),
+        expect.stringContaining('CREATE TABLE IF NOT EXISTS orders'),
       );
       expect(mockExec).toHaveBeenNthCalledWith(
         3,
-        expect.stringContaining("CREATE TABLE IF NOT EXISTS products"),
+        expect.stringContaining('CREATE TABLE IF NOT EXISTS products'),
       );
-      expect(consoleSpy).toHaveBeenCalledWith(
-        "✅ Tabelas SQLite inicializadas com sucesso",
-      );
+      expect(consoleSpy).toHaveBeenCalledWith('✅ Tabelas SQLite inicializadas com sucesso');
     });
   });
 
-  describe("getConnection", () => {
-    it("deve retornar a conexão do banco de dados", () => {
+  describe('getConnection', () => {
+    it('deve retornar a conexão do banco de dados', () => {
       const database = Database.getInstance();
       const connection = database.getConnection();
 
@@ -98,31 +96,28 @@ describe("Database", () => {
     });
   });
 
-  describe("initTables", () => {
-    it("deve lançar erro se falhar ao criar tabelas", () => {
-      const error = new Error("Erro ao criar tabela");
+  describe('initTables', () => {
+    it('deve lançar erro se falhar ao criar tabelas', () => {
+      const error = new Error('Erro ao criar tabela');
       mockExec.mockImplementation(() => {
         throw error;
       });
 
       expect(() => Database.getInstance()).toThrow(error);
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        "❌ Erro ao inicializar tabelas SQLite:",
-        error,
-      );
+      expect(consoleErrorSpy).toHaveBeenCalledWith('❌ Erro ao inicializar tabelas SQLite:', error);
     });
   });
 
-  describe("insertUser", () => {
+  describe('insertUser', () => {
     let database: Database;
 
     beforeEach(() => {
       database = Database.getInstance();
     });
 
-    it("deve inserir usuário com sucesso", () => {
+    it('deve inserir usuário com sucesso', () => {
       const userId = 1;
-      const name = "João Silva";
+      const name = 'João Silva';
 
       database.insertUser(userId, name);
 
@@ -132,27 +127,25 @@ describe("Database", () => {
       expect(mockRun).toHaveBeenCalledWith(userId, name);
     });
 
-    it("deve usar INSERT OR IGNORE para evitar duplicatas", () => {
-      database.insertUser(1, "João Silva");
+    it('deve usar INSERT OR IGNORE para evitar duplicatas', () => {
+      database.insertUser(1, 'João Silva');
 
-      expect(mockPrepare).toHaveBeenCalledWith(
-        expect.stringContaining("INSERT OR IGNORE"),
-      );
+      expect(mockPrepare).toHaveBeenCalledWith(expect.stringContaining('INSERT OR IGNORE'));
     });
   });
 
-  describe("insertOrder", () => {
+  describe('insertOrder', () => {
     let database: Database;
 
     beforeEach(() => {
       database = Database.getInstance();
     });
 
-    it("deve inserir pedido com sucesso", () => {
+    it('deve inserir pedido com sucesso', () => {
       const orderId = 1;
       const userId = 1;
-      const total = "100.00";
-      const date = "2023-01-01";
+      const total = '100.00';
+      const date = '2023-01-01';
 
       database.insertOrder(orderId, userId, total, date);
 
@@ -162,26 +155,24 @@ describe("Database", () => {
       expect(mockRun).toHaveBeenCalledWith(orderId, userId, total, date);
     });
 
-    it("deve usar INSERT OR REPLACE para substituir pedidos existentes", () => {
-      database.insertOrder(1, 1, "100.00", "2023-01-01");
+    it('deve usar INSERT OR REPLACE para substituir pedidos existentes', () => {
+      database.insertOrder(1, 1, '100.00', '2023-01-01');
 
-      expect(mockPrepare).toHaveBeenCalledWith(
-        expect.stringContaining("INSERT OR REPLACE"),
-      );
+      expect(mockPrepare).toHaveBeenCalledWith(expect.stringContaining('INSERT OR REPLACE'));
     });
   });
 
-  describe("insertProduct", () => {
+  describe('insertProduct', () => {
     let database: Database;
 
     beforeEach(() => {
       database = Database.getInstance();
     });
 
-    it("deve inserir produto com sucesso", () => {
+    it('deve inserir produto com sucesso', () => {
       const orderId = 1;
       const productId = 1;
-      const value = "50.00";
+      const value = '50.00';
 
       database.insertProduct(orderId, productId, value);
 
@@ -192,14 +183,14 @@ describe("Database", () => {
     });
   });
 
-  describe("clearProductsForOrder", () => {
+  describe('clearProductsForOrder', () => {
     let database: Database;
 
     beforeEach(() => {
       database = Database.getInstance();
     });
 
-    it("deve limpar produtos de um pedido específico", () => {
+    it('deve limpar produtos de um pedido específico', () => {
       const orderId = 1;
 
       database.clearProductsForOrder(orderId);
@@ -211,51 +202,51 @@ describe("Database", () => {
     });
   });
 
-  describe("Integração dos métodos", () => {
+  describe('Integração dos métodos', () => {
     let database: Database;
 
     beforeEach(() => {
       database = Database.getInstance();
     });
 
-    it("deve executar fluxo completo de inserção de dados", () => {
-      database.insertUser(1, "João Silva");
+    it('deve executar fluxo completo de inserção de dados', () => {
+      database.insertUser(1, 'João Silva');
 
-      database.insertOrder(1, 1, "150.00", "2023-01-01");
+      database.insertOrder(1, 1, '150.00', '2023-01-01');
 
       database.clearProductsForOrder(1);
 
-      database.insertProduct(1, 1, "100.00");
-      database.insertProduct(1, 2, "50.00");
+      database.insertProduct(1, 1, '100.00');
+      database.insertProduct(1, 2, '50.00');
 
       expect(mockPrepare).toHaveBeenCalledTimes(5);
       expect(mockRun).toHaveBeenCalledTimes(5);
     });
   });
 
-  describe("Tratamento de erros", () => {
+  describe('Tratamento de erros', () => {
     let database: Database;
 
     beforeEach(() => {
       database = Database.getInstance();
     });
 
-    it("deve propagar erros do prepare statement", () => {
-      const error = new Error("Erro no prepare");
+    it('deve propagar erros do prepare statement', () => {
+      const error = new Error('Erro no prepare');
       mockPrepare.mockImplementation(() => {
         throw error;
       });
 
-      expect(() => database.insertUser(1, "João Silva")).toThrow(error);
+      expect(() => database.insertUser(1, 'João Silva')).toThrow(error);
     });
 
-    it("deve propagar erros do run statement", () => {
-      const error = new Error("Erro no run");
+    it('deve propagar erros do run statement', () => {
+      const error = new Error('Erro no run');
       mockRun.mockImplementation(() => {
         throw error;
       });
 
-      expect(() => database.insertUser(1, "João Silva")).toThrow(error);
+      expect(() => database.insertUser(1, 'João Silva')).toThrow(error);
     });
   });
 });

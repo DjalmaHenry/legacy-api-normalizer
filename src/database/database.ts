@@ -1,7 +1,7 @@
-import { DatabaseSync } from "node:sqlite";
-import path from "path";
+import { DatabaseSync } from 'node:sqlite';
+import path from 'path';
 
-const DB_PATH = path.join(process.cwd(), "database.db");
+const DB_PATH = path.join(process.cwd(), 'database.db');
 
 class Database {
   private static instance: Database;
@@ -52,9 +52,9 @@ class Database {
         )
       `);
 
-      console.log("Tabelas SQLite inicializadas com sucesso");
+      console.log('Tabelas SQLite inicializadas com sucesso');
     } catch (error) {
-      console.error("Erro ao inicializar tabelas SQLite:", error);
+      console.error('Erro ao inicializar tabelas SQLite:', error);
       throw error;
     }
   }
@@ -66,23 +66,14 @@ class Database {
     stmt.run(userId, name);
   }
 
-  public insertOrder(
-    orderId: number,
-    userId: number,
-    total: string,
-    date: string,
-  ): void {
+  public insertOrder(orderId: number, userId: number, total: string, date: string): void {
     const stmt = this.db.prepare(`
       INSERT OR REPLACE INTO orders (id, user_id, total, date) VALUES (?, ?, ?, ?)
     `);
     stmt.run(orderId, userId, total, date);
   }
 
-  public insertProduct(
-    orderId: number,
-    productId: number,
-    value: string,
-  ): void {
+  public insertProduct(orderId: number, productId: number, value: string): void {
     const stmt = this.db.prepare(`
       INSERT INTO products (order_id, product_id, value) VALUES (?, ?, ?)
     `);

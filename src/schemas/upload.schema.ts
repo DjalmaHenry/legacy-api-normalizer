@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const uploadResponseSchema = z.object({
   message: z.string(),
@@ -24,39 +24,39 @@ export const userOrdersSchema = z.object({
 });
 
 export const productJsonSchema = {
-  type: "object",
+  type: 'object',
   properties: {
-    product_id: { type: "number" },
-    value: { type: "string" },
+    product_id: { type: 'number' },
+    value: { type: 'string' },
   },
-  required: ["product_id", "value"],
+  required: ['product_id', 'value'],
 };
 
 export const orderJsonSchema = {
-  type: "object",
+  type: 'object',
   properties: {
-    order_id: { type: "number" },
-    total: { type: "string" },
-    date: { type: "string" },
+    order_id: { type: 'number' },
+    total: { type: 'string' },
+    date: { type: 'string' },
     products: {
-      type: "array",
+      type: 'array',
       items: productJsonSchema,
     },
   },
-  required: ["order_id", "total", "date", "products"],
+  required: ['order_id', 'total', 'date', 'products'],
 };
 
 export const userOrdersJsonSchema = {
-  type: "object",
+  type: 'object',
   properties: {
-    user_id: { type: "number" },
-    name: { type: "string" },
+    user_id: { type: 'number' },
+    name: { type: 'string' },
     orders: {
-      type: "array",
+      type: 'array',
       items: orderJsonSchema,
     },
   },
-  required: ["user_id", "name", "orders"],
+  required: ['user_id', 'name', 'orders'],
 };
 
 export type UploadResponse = z.infer<typeof uploadResponseSchema>;
