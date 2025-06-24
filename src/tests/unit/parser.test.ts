@@ -31,13 +31,13 @@ describe('OrderParser', () => {
     });
 
     it('deve lançar erro para campos numéricos inválidos', () => {
-      const line = 'AAAAAAAABJoão Silva                                   BBBBBBBBBBCCCCCCCCCCaaaaa123.45 20230101';
+      const line = 'AAAAAAAABJoão Silva                                   BBBBBBBBBBCCCCCCCCCCaaaaa123.45 20230101 ';
       
       expect(() => parser.parseLine(line)).toThrow('Campos numéricos inválidos');
     });
 
     it('deve lançar erro para nome vazio', () => {
-      const line = '0000000001                                           0000000001000000000100000123.45 20230101';
+      const line = '0000000001                                             0000000001000000000100000123.45 20230101';
       
       expect(() => parser.parseLine(line)).toThrow('Nome do usuário não pode estar vazio');
     });
@@ -46,9 +46,9 @@ describe('OrderParser', () => {
   describe('parseFile', () => {
     it('deve analisar corretamente um arquivo com múltiplas linhas', () => {
       const content = [
-        '0000000001João Silva                                  0000000001000000000100000123.45 20230101',
-        '0000000001João Silva                                  0000000001000000000200000056.78 20230101',
-        '0000000002Maria Souza                                0000000002000000000300000099.99 20230202'
+        '0000000001João Silva                                   0000000001000000000100000123.45 20230101',
+        '0000000001João Silva                                   0000000001000000000200000056.78 20230101',
+        '0000000002Maria Souza                                  0000000002000000000300000099.99 20230202'
       ].join('\n');
       
       const result = parser.parseFile(content);
@@ -62,9 +62,9 @@ describe('OrderParser', () => {
     it('deve ignorar linhas vazias', () => {
       const content = [
         '',
-        '0000000001João Silva                                  0000000001000000000100000123.45 20230101',
+        '0000000001João Silva                                   0000000001000000000100000123.45 20230101',
         '',
-        '0000000002Maria Souza                                0000000002000000000300000099.99 20230202',
+        '0000000002Maria Souza                                  0000000002000000000300000099.99 20230202',
         ''
       ].join('\n');
       
@@ -73,11 +73,26 @@ describe('OrderParser', () => {
       expect(result).toHaveLength(2);
     });
 
+    it('deve analisar corretamente um arquivo com múltiplas linhas', () => {
+      const content = [
+        '0000000001João Silva                                   0000000001000000000100000123.45 20230101',
+        '0000000001João Silva                                   0000000001000000000200000056.78 20230101',
+        '0000000002Maria Souza                                  0000000002000000000300000099.99 20230202'
+      ].join('\n');
+      
+      const result = parser.parseFile(content);
+      
+      expect(result).toHaveLength(3);
+      expect(result[0].user_id).toBe(1);
+      expect(result[1].product_id).toBe(2);
+      expect(result[2].name).toBe('Maria Souza');
+    });
+
     it('deve lançar erro com número da linha quando uma linha é inválida', () => {
       const content = [
-        '0000000001João Silva                                  0000000001000000000100000123.45 20230101',
+        '0000000001João Silva                                   0000000001000000000100000123.45 20230101',
         'linha inválida',
-        '0000000002Maria Souza                                0000000002000000000300000099.99 20230202'
+        '0000000002Maria Souza                                  0000000002000000000300000099.99 20230202'
       ].join('\n');
       
       expect(() => parser.parseFile(content)).toThrow('Erro na linha 2:');

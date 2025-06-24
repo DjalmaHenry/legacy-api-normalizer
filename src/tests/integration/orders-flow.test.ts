@@ -41,7 +41,7 @@ describe('Fluxo de Processamento de Pedidos (Integração)', () => {
     const testFileContent = [
       '0000000001João Silva                                   0000000001000000000100000123.45 20230101',
       '0000000001João Silva                                   0000000001000000000200000056.78 20230101',
-      '0000000002Maria Souza                                 0000000002000000000300000099.99 20230202'
+      '0000000002Maria Souza                                  0000000002000000000300000099.99 20230202'
     ].join('\n');
     
     // Criar um buffer com o conteúdo do arquivo

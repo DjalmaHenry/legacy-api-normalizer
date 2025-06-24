@@ -104,6 +104,8 @@ describe('PersistenceService', () => {
 
     it('deve propagar erros do banco de dados', () => {
       // Arrange
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      
       const data: UserOrders[] = [
         {
           user_id: 1,
@@ -120,14 +122,17 @@ describe('PersistenceService', () => {
           ]
         }
       ];
-
+  
       const dbError = new Error('Erro de banco de dados');
       mockDatabase.insertUser.mockImplementation(() => {
         throw dbError;
       });
-
+  
       // Act & Assert
       expect(() => persistenceService.persistData(data)).toThrow(dbError);
+      
+      // Cleanup
+      consoleSpy.mockRestore();
     });
   });
 });
