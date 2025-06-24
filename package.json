@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "tsx --watch --experimental-sqlite src/server.ts",
     "build": "node esbuild.config.js",
-    "start": "node --experimental-sqlite dist/server.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
