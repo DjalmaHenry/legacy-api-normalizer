@@ -141,6 +141,7 @@ npm run lint
 npm run lint:fix
 npm run format
 ```
+
 ## Deploy
 
 A API foi implantada na plataforma Fly.io e está disponível no seguinte endereço:
@@ -158,7 +159,7 @@ Endpoint para upload de arquivo `.txt` com dados de pedidos legados e retorna da
 
 1. Abra o Postman ou Insomnia
 2. Crie uma nova requisição do tipo POST
-3. Insira a URL: `https://legacy-api-normalizer-bitter-dust-7197.fly.dev/orders/upload` 
+3. Insira a URL: `https://legacy-api-normalizer-bitter-dust-7197.fly.dev/orders/upload`
    (caso esteja rodando localmente, use `http://localhost:3000/orders/upload`)
 4. Na seção "Body", selecione a opção "form-data" (Postman) ou "Multipart Form" (Insomnia)
 5. Adicione um campo com a chave `file` e selecione o tipo "File"

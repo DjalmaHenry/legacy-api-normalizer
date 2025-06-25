@@ -1,9 +1,10 @@
 import { DatabaseSync } from 'node:sqlite';
 import path from 'path';
 
-const DB_PATH = process.env.NODE_ENV === 'production' 
-  ? '/data/database.db' 
-  : path.join(process.cwd(), 'database.db');
+const DB_PATH =
+  process.env.NODE_ENV === 'production'
+    ? '/data/database.db'
+    : path.join(process.cwd(), 'database.db');
 
 class Database {
   private static instance: Database;
