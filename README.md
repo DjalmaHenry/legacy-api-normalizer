@@ -165,13 +165,6 @@ Endpoint para upload de arquivo `.txt` com dados de pedidos legados e retorna da
 6. Clique no botão para selecionar o arquivo e escolha seu arquivo .txt
 7. Envie a requisição
 
-```bash
-curl -X POST \
-  http://localhost:3000/orders/upload \
-  -H "Content-Type: multipart/form-data" \
-  -F "file=@orders.txt"
-```
-
 #### Formato de entrada (.txt):
 
 Cada linha do arquivo deve ter exatamente 95 caracteres com campos de tamanho fixo:
