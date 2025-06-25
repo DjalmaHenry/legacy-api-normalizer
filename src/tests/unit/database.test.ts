@@ -83,7 +83,7 @@ describe('Database', () => {
         3,
         expect.stringContaining('CREATE TABLE IF NOT EXISTS products'),
       );
-      expect(consoleSpy).toHaveBeenCalledWith('✅ Tabelas SQLite inicializadas com sucesso');
+      expect(consoleSpy).toHaveBeenCalledWith('Tabelas SQLite inicializadas com sucesso');
     });
   });
 
@@ -104,7 +104,7 @@ describe('Database', () => {
       });
 
       expect(() => Database.getInstance()).toThrow(error);
-      expect(consoleErrorSpy).toHaveBeenCalledWith('❌ Erro ao inicializar tabelas SQLite:', error);
+      expect(consoleErrorSpy).toHaveBeenCalledWith('Erro ao inicializar tabelas SQLite:', error);
     });
   });
 
