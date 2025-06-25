@@ -150,6 +150,16 @@ Endpoint para upload de arquivo `.txt` com dados de pedidos legados e retorna da
 
 #### Como usar:
 
+##### Usando Postman ou Insomnia:
+
+1. Abra o Postman ou Insomnia
+2. Crie uma nova requisição do tipo POST
+3. Insira a URL: `http://localhost:3000/orders/upload`
+4. Na seção "Body", selecione a opção "form-data" (Postman) ou "Multipart Form" (Insomnia)
+5. Adicione um campo com a chave `file` e selecione o tipo "File"
+6. Clique no botão para selecionar o arquivo e escolha seu arquivo .txt
+7. Envie a requisição
+
 ```bash
 curl -X POST \
   http://localhost:3000/orders/upload \
